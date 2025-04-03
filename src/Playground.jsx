@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Playcard from "./Playcard";
 
 
@@ -15,6 +14,7 @@ export default function Playground(props) {
                             key={index}
                             item={item}
                             shuffleArray={props.shuffleArray}
+                            checkElement={props.checkElement}
                         />
                     )
                 })
