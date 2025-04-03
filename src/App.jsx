@@ -9,18 +9,20 @@ function App() {
   const [bestScore, setBestScore] = useState(0);
   const [cardsArray, setCardsArray] = useState([1, 2, 3, 4, 5, 6]);
 
-  console.log(cardsArray);
-  
-
   function shuffleArray() {
     let currentIndex = cardsArray.length;
     while(currentIndex) {
         let randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
-        [cardsArray[currentIndex], cardsArray[randomIndex]] = [cardsArray[randomIndex], cardsArray[currentIndex]]
-
-        setCardsArray(cardsArray);
+        [cardsArray[currentIndex], cardsArray[randomIndex]] = [cardsArray[randomIndex], cardsArray[currentIndex]]        
     }
+    console.log(cardsArray);
+    const newArray = [];
+    cardsArray.map((item) => {
+      newArray.push(item);
+    })
+    setCardsArray(newArray);
+
     // console.log("s-a intamplat shuffle si cardsArray arata asa")
     // console.log(cardsArray);
   }

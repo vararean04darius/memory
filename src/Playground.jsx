@@ -3,12 +3,7 @@ import Playcard from "./Playcard";
 
 
 export default function Playground(props) {
-
-    let arr = props.cardsArray;
-    
-    // useEffect(() => {
-
-    // }, [props.cardsArray])
+    const arr = props.cardsArray;
 
     return(
         <div id="playground-container">
