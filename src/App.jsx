@@ -6,33 +6,70 @@ import Playground from './Playground';
 function App() {
   const [currentScore, setCurrentScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
-  const [cardsArray, setCardsArray] = useState([
-    {name:'bombardino crocodilo', index: 1, url:'', checked: false}, 
-    {name:'trippi troppi', index: 2, url:'', checked: false},
-    {name:'tung tung tung sahur', index: 3, url:'', checked: false},
-    {name:'tralalero tralala', index: 4, url:'', checked: false},
-    {name:'trulimero trulicina', index: 5, url:'', checked: false},
-    {name:'bombombini gusini', index: 6, url:'', checked: false},
-    {name:'brr brr patapim', index: 7, url:'', checked: false},
-    {name:'bobritto bandito', index: 8, url:'', checked: false},
-    {name:'frigo camelo', index: 9, url:'', checked: false},
-    {name:'chimpanzini bananini', index: 10, url:'', checked: false},
-    {name:'penguino cocosino', index: 11, url:'', checked: false},
-    {name:'lirili larila', index: 12, url:'', checked: false},
-  ]);
+  const [cardsArray, setCardsArray] = useState([]);
+
+  // [
+  //   {name:'crocodilo', index: 1, url:'', checked: false}, 
+  //   {name:'bear', index: 2, url:'', checked: false},
+  //   {name:'gorilla', index: 3, url:'', checked: false},
+  //   {name:'shark', index: 4, url:'', checked: false},
+  //   {name:'cat', index: 5, url:'', checked: false},
+  //   {name:'goose', index: 6, url:'', checked: false},
+  //   {name:'monkey', index: 7, url:'', checked: false},
+  //   {name:'capybara', index: 8, url:'', checked: false},
+  //   {name:'camel', index: 9, url:'', checked: false},
+  //   {name:'chimpanzee', index: 10, url:'', checked: false},
+  //   {name:'penguin', index: 11, url:'', checked: false},
+  //   {name:'elephant', index: 12, url:'', checked: false},
+  // ]
 
   useEffect(() => {
-    fetch("https://api.imgur.com/3/image/AhAidlx")
-      .then(response => {
-        if(!response.ok) {
-          throw new Error('Response was not ok, imgur might be down');
-        }
-        return response.json();
-      })
-      .then(result => console.log(result))
-      .catch(error => console.log('Error:', error));
 
-  }, [])
+    const fetchGifs = async () => {
+      try {
+        const gifs = [
+          { name: "crocodilo", id: "l1UGRup7CD99oosxKn" },
+          { name: "bear", id: "IThjAlJnD9WNO" },
+          { name: "gorilla", id: "iXOoi6i2l9PZvCN0zU" },
+          { name: "shark", id: "ORWdUNzeK5FJWDiDW4" },
+          { name: "cat", id: "mlvseq9yvZhba" },
+          { name: "goose", id: "xT39CZ1aM1WB0dZwOY" },
+          { name: "monkey", id: "AngoluFPb3F3G" },
+          { name: "capybara", id: "j5w56MxUF6UxhJmarM" },
+          { name: "camel", id: "Cxxc1wAHXrY8JLKzGE" },
+          { name: "chimpanzee", id: "wn7kFBI4NiT2E" },
+          { name: "penguin", id: "daeKl3P4SissU" },
+          { name: "elephant", id: "YFCpPS5j8VSXmkKC89" }
+        ];
+
+        const apiKey = "1xoNxYi9PHoMU7TJVZiyBgsX8tpxYC2y";
+        const baseUrl = "https://api.giphy.com/v1/gifs/";
+
+
+        const requests = gifs.map(gif =>
+          fetch(`${baseUrl}${gif.id}?api_key=${apiKey}&rating=g`)
+            .then(res => res.json())
+            .then(data => ({
+              name: gif.name,
+              url: data.data.images.original.url,
+              checked: false
+            }))
+        );
+
+        const results = await Promise.all(requests);
+        const finalData = results.map((item, index) => ({
+          ...item,
+          index: index + 1
+        }));
+
+        setCardsArray(finalData);
+      } catch (error) {
+        console.error("Eroare la fetch:", error);
+      }
+    };
+
+    fetchGifs();
+  }, []);
 
   function shuffleArray() {
     let currentIndex = cardsArray.length;
@@ -46,7 +83,6 @@ function App() {
       newArray.push(item);
     })
     setCardsArray(newArray);
-    console.log(cardsArray);
   }
 
   function resetCounter() {
